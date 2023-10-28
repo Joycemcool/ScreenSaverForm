@@ -109,6 +109,9 @@ namespace ScreensaverAssignment
     }//end class shape
     public class MyPolyTriangle : Shape
     {
+        int x = 0;
+        int y = 0;
+        char travel;
 
         public int topX = 400;
         public int topY = 5000;
@@ -121,6 +124,15 @@ namespace ScreensaverAssignment
 
         public MyPolyTriangle(int x, int y)
         {
+            Random random = new Random();
+            this.x = x;
+            this.y = y;
+            int ran = random.Next(0, 4);
+            if (ran == 0) { travel = 'N'; }
+            if (ran == 1) { travel = 'S'; }
+            if (ran == 2) { travel = 'E'; }
+            if (ran == 3) { travel = 'W'; }
+
             topX = x;
             topY = y;
             leftX = x - 50;
@@ -131,6 +143,39 @@ namespace ScreensaverAssignment
 
         public override void Draw(PaintEventArgs e, Form form)
         {
+            //Console.WriteLine(travel);
+            //if (travel == 'N') { y--; }
+            //if (travel == 'S') { y++; }
+            //if (travel == 'E') { x++; }
+            //if (travel == 'W') { x--; }
+
+            //if (x == 0)
+            //{ // met west go east
+            //    x++;
+            //    travel = 'E';
+            //}
+            //if (x == form.Width - (newImage.Width + 16)) // met east go west
+            //{
+            //    x--;
+            //    travel = 'W';
+            //}
+            //if (y == 0)// met north go south
+            //{
+            //    y++;
+            //    travel = 'S';
+            //}
+            //if (y == form.Height)// met south go north
+            //{
+            //    y--;
+            //    travel = 'N';
+            //}
+
+            //Console.WriteLine(x + " " + y);
+
+            //PointF ulCorner = new PointF(x, y); //upper-left corner of image.
+
+            //e.Graphics.DrawImage(newImage, ulCorner);
+
             e.Graphics.FillPolygon(Brushes.Aquamarine, new Point[] {
 
                 new Point(topX, topY),
@@ -147,8 +192,10 @@ namespace ScreensaverAssignment
     public class MyPolyCircle : Shape
     {
         public int radius = 40;
-        public int topX = 400;
-        public int topY = 5000;
+        public int topX;
+        public int topY;
+        private int moveSpeed = 5; 
+        private int directionX = 1;
 
         public MyPolyCircle(int x, int y)
         {
@@ -163,7 +210,29 @@ namespace ScreensaverAssignment
 
             // Draw the circle using the Graphics object from PaintEventArgs
             e.Graphics.FillEllipse(Brushes.DarkRed, boundingRect);
+
+            topX += moveSpeed * directionX;
+
+            // Check if the circle is moving out of the frame
+            if (topX - radius < 0 || topX + radius > form.Width)
+            {
+                // Reverse the direction when it reaches the frame boundary
+                directionX *= -1;
+            }
         }
+
+        //public void Move(Form form)
+        //{
+        //    // Update the circle's position based on the direction and speed
+        //    topX += moveSpeed * directionX;
+
+        //    // Check if the circle is moving out of the frame
+        //    if (topX - radius < 0 || topX + radius > form.Width )
+        //    {
+        //        // Reverse the direction when it reaches the frame boundary
+        //        directionX *= -1;
+        //    }
+        //}
 
     }
 
