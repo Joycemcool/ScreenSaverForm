@@ -11,17 +11,23 @@ using System.Timers;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.Eventing.Reader;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using System.Net.NetworkInformation;
+using ScreensaverAssignment.Shapes;
+using ScreensaverAssignment.Shapes.ChildShapes;
 
 namespace ScreensaverAssignment
 {
     public partial class ScreenSaverForm : Form
     {
-        System.Timers.Timer timer = new System.Timers.Timer(50);
 
         List<Shape> shapeList = new List<Shape>();
 
+        System.Timers.Timer timer = new System.Timers.Timer(50);
         // Define a PictureBox control to display an image (or shape)
         private PictureBox pictureBox;
+
+        private Random rand = new Random();
 
         public ScreenSaverForm()
         {
@@ -38,42 +44,61 @@ namespace ScreensaverAssignment
             this.Paint += new PaintEventHandler(ScreenSaverForm_Paint);
             pictureBox.Click += new EventHandler(PictureBox_Click);
 
-            timer.Interval = 50;
-            timer.Elapsed += OnTimedEvent;
-            timer.Start();
-            this.MouseClick += (System.Windows.Forms.MouseEventHandler)MouseClickHandler;
         }
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             Console.WriteLine("Tick");
-            Invalidate();
+
+            foreach (Shape shape in shapeList)
+            {
+                shape.Move(this);
+            }
+
+            this.Invalidate();
 
         }
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
         {
-
+            
+            timer.Interval = 200;
+            timer.Elapsed += OnTimedEvent;
+            this.MouseClick += (System.Windows.Forms.MouseEventHandler)MouseClickHandler;     
+            
+            //Resize form would be resized to  the entire screen
+            //Bounds = Screen.PrimaryScreen.Bounds;
+            timer.Start();
         }
+
 
         //Draw custom shapes on the form
         private void ScreenSaverForm_Paint(object sender, PaintEventArgs e)
         {
+            //Polymorphic processing (late binding with timing) using an array list with all casting operations being explicit.
             for (int i = 0; i < shapeList.Count; i++)
                 shapeList[i].Draw(e, this);
-
         }
 
         private void PictureBox_Click(object sender, EventArgs e)
         {
             // Handle the click event of the PictureBox (e.g., change the image or shape)
-            // You can add code here to update the PictureBox when it's clicked
-            pictureBox.BackColor = Color.Beige;
+            // Change position
+
+            int newX = rand.Next(0, this.ClientSize.Width - pictureBox.Width);
+            int newY = rand.Next(0, this.ClientSize.Height - pictureBox.Height);
+            pictureBox.Location = new Point(newX, newY);
+
+            // Change the PictureBox's background color to a random color
+            Color randomColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
+            pictureBox.BackColor = randomColor;
         }
 
-        private void MouseClickHandler(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void MouseClickHandler(object sender, MouseEventArgs e)
         {
+            
+            
             Random random = new Random();
-            int ran = random.Next(0, 4);
+            int ran = random.Next(0, 5);
             int mouseX = e.X;
             int mouseY = e.Y;
 
@@ -85,195 +110,25 @@ namespace ScreensaverAssignment
                 new Point(150, 150)
             };
 
+            if (ran == 0)
+                shapeList.Add(new Triangle(mouseX, mouseY));
+            else if (ran == 1)
+                shapeList.Add(new ImageShape(mouseX, mouseY));
+            else if (ran == 2)
+                shapeList.Add(new Circle(mouseX, mouseY));
+            else if (ran == 3)
+                shapeList.Add(new Retangle(mouseX, mouseY));
+            else if (ran == 4)
+                shapeList.Add(new Polygon(polygonPoints));
+
+
             Console.WriteLine(mouseX + " " + mouseY + " " + ran);
 
-            if (ran == 0)
-                shapeList.Add(new MyPolyTriangle(mouseX, mouseY));
-            else if (ran == 1)
-                shapeList.Add(new MyPolyCircle(mouseX, mouseY));
-            else if (ran == 2)
-                shapeList.Add(new MyPolyRectangle(mouseX, mouseY));
-            else if (ran == 3)
-                shapeList.Add(new MyPolyPolygon(polygonPoints));
         }
-
         private void panel1_Paint(object sender, PaintEventArgs e) { }
 
 
     } //End class form
 
-    public abstract class Shape
-    {
-        public abstract void Draw(PaintEventArgs e, Form form);
-
-    }//end class shape
-    public class MyPolyTriangle : Shape
-    {
-        int x = 0;
-        int y = 0;
-        char travel;
-
-        public int topX = 400;
-        public int topY = 5000;
-
-        public int leftX = 350;
-        public int leftY = 150;
-
-        public int rightX = 450;
-        public int rightY = 150;
-
-        public MyPolyTriangle(int x, int y)
-        {
-            Random random = new Random();
-            this.x = x;
-            this.y = y;
-            int ran = random.Next(0, 4);
-            if (ran == 0) { travel = 'N'; }
-            if (ran == 1) { travel = 'S'; }
-            if (ran == 2) { travel = 'E'; }
-            if (ran == 3) { travel = 'W'; }
-
-            topX = x;
-            topY = y;
-            leftX = x - 50;
-            leftY = y + 100;
-            rightX = x + 50;
-            rightY = y + 100;
-        }
-
-        public override void Draw(PaintEventArgs e, Form form)
-        {
-            //Console.WriteLine(travel);
-            //if (travel == 'N') { y--; }
-            //if (travel == 'S') { y++; }
-            //if (travel == 'E') { x++; }
-            //if (travel == 'W') { x--; }
-
-            //if (x == 0)
-            //{ // met west go east
-            //    x++;
-            //    travel = 'E';
-            //}
-            //if (x == form.Width - (newImage.Width + 16)) // met east go west
-            //{
-            //    x--;
-            //    travel = 'W';
-            //}
-            //if (y == 0)// met north go south
-            //{
-            //    y++;
-            //    travel = 'S';
-            //}
-            //if (y == form.Height)// met south go north
-            //{
-            //    y--;
-            //    travel = 'N';
-            //}
-
-            //Console.WriteLine(x + " " + y);
-
-            //PointF ulCorner = new PointF(x, y); //upper-left corner of image.
-
-            //e.Graphics.DrawImage(newImage, ulCorner);
-
-            e.Graphics.FillPolygon(Brushes.Aquamarine, new Point[] {
-
-                new Point(topX, topY),
-                new Point(leftX, leftY),
-                new Point(rightX, rightY)
-
-            });
-
-        }//End Draw method
-
-    }//end MyPolyTriangle class
-
-
-    public class MyPolyCircle : Shape
-    {
-        public int radius = 40;
-        public int topX;
-        public int topY;
-        private int moveSpeed = 5; 
-        private int directionX = 1;
-
-        public MyPolyCircle(int x, int y)
-        {
-            // Initialize the position of the circle
-            this.topX = x;
-            this.topY = y;
-        }
-        public override void Draw(PaintEventArgs e, Form form)
-        {
-            // Calculate the bounding rectangle for the circle
-            Rectangle boundingRect = new Rectangle(topX - radius, topY - radius, 2 * radius, 2 * radius);
-
-            // Draw the circle using the Graphics object from PaintEventArgs
-            e.Graphics.FillEllipse(Brushes.DarkRed, boundingRect);
-
-            topX += moveSpeed * directionX;
-
-            // Check if the circle is moving out of the frame
-            if (topX - radius < 0 || topX + radius > form.Width)
-            {
-                // Reverse the direction when it reaches the frame boundary
-                directionX *= -1;
-            }
-        }
-
-        //public void Move(Form form)
-        //{
-        //    // Update the circle's position based on the direction and speed
-        //    topX += moveSpeed * directionX;
-
-        //    // Check if the circle is moving out of the frame
-        //    if (topX - radius < 0 || topX + radius > form.Width )
-        //    {
-        //        // Reverse the direction when it reaches the frame boundary
-        //        directionX *= -1;
-        //    }
-        //}
-
-    }
-
-    public class MyPolyRectangle : Shape
-    {
-        public int width = 80; // Adjust the width as needed
-        public int height = 40; // Adjust the height as needed
-        public int topX = 400;
-        public int topY = 5000;
-
-        public MyPolyRectangle(int x, int y)
-        {
-            // Initialize the position of the circle
-            this.topX = x;
-            this.topY = y;
-        }
-        public override void Draw(PaintEventArgs e, Form form)
-        {
-            // Calculate the bounding rectangle for the circle
-            Rectangle boundingRect = new Rectangle(topX, topY, width, height);
-
-            // Draw the circle using the Graphics object from PaintEventArgs
-            e.Graphics.FillEllipse(Brushes.DarkOliveGreen, boundingRect);
-        }
-
-    }
-
-    public class MyPolyPolygon : Shape
-    {
-        private Point[] points; // Array to store the vertices of the polygon
-
-        public MyPolyPolygon(Point[] polygonPoints)
-        {
-            // Initialize the vertices of the polygon
-            this.points = polygonPoints;
-        }
-
-        public override void Draw(PaintEventArgs e, Form form)
-        {
-            // Draw the polygon using the Graphics object from PaintEventArgs
-            e.Graphics.FillPolygon(Brushes.DarkBlue, points);
-        }
-    }
+   
 }//End namespace

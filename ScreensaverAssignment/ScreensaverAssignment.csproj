@@ -54,6 +54,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shapes\ChildShapes\Circle.cs" />
+    <Compile Include="Shapes\ChildShapes\ImageShape.cs" />
+    <Compile Include="Shapes\ChildShapes\Polygon.cs" />
+    <Compile Include="Shapes\ChildShapes\Retangle.cs" />
+    <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\ChildShapes\Triangle.cs" />
     <EmbeddedResource Include="ScreenSaverForm.resx">
       <DependentUpon>ScreenSaverForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -78,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dancingGirl.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
