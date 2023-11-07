@@ -18,8 +18,10 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         private Color color;
         public int topX;
         public int topY;
+        public PictureBox pentagonBox;
         private int XVelocity;
         private int YVelocity;
+        public Point[] points;   
         public Polygon(int x, int y)
         {
             this.topX = x;
@@ -28,7 +30,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         public override void Draw(PaintEventArgs e, Form form)
         {
-            Point[] points = new Point[sides];
+            points = new Point[sides];
 
             for (int i = 0; i < sides; i++)
             {
@@ -37,44 +39,21 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
                 int y1 = topY + (int)(radius * Math.Sin(angle));
                 points[i] = new Point(x1, y1);
             }
-
             color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, points);
+            pentagonBox = new PictureBox();
+
         }
 
         public override void Move(Form form)
         {
-            //XVelocity = random.Next(-30, 30); // Adjust the range as needed
-            //YVelocity = random.Next(-30, 30);
+            XVelocity = random.Next(-30, 30); // Adjust the range as needed
+            YVelocity = random.Next(-30, 30);
 
-            //this.topX += XVelocity;
-            //this.topY += YVelocity;
+            this.topX += XVelocity;
+            this.topY += YVelocity;
 
-            //points[0] = new Point(topX, topY);
-            //points[1] = new Point(topX + width, topY);
-            //points[2] = new Point(topX + width, topY + height);
-            //points[3] = new Point(topX, topY + height);
-
-            //topX += XVelocity;
-            //topY += YVelocity;
-            //leftX += XVelocity;
-            //leftY += YVelocity;
-            //rightX += XVelocity;
-            //rightY += YVelocity;
-
-            //if (topX < 0 || (topX + width) > form.ClientRectangle.Right)
-            //{
-            //    XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
-            //}
-
-            //if (topY < 0 || (topY + height) > form.ClientRectangle.Bottom)
-            //{
-            //    YVelocity = -YVelocity; // Reverse vertical velocity on collision with top or bottom wall
-            //}
-
-            
-            //form.Invalidate();
         }
 
     }
