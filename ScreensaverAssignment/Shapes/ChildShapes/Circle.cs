@@ -11,7 +11,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
     public class Circle : Shape
     {
 
-        public int radius = 40;
+        public int radius;
         public Rectangle circleBox;
         public int X;
         public int Y;
@@ -25,14 +25,14 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             this.X = x;
             this.Y = y;
             // Initialize the velocities randomly within a range
+            radius = random.Next(15, 80);
+            circleBox = new Rectangle(X, Y, radius, radius);
+            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
 
-            circleBox = new Rectangle(X, Y, 2 * radius, 2 * radius);
         }
         public override void Draw(PaintEventArgs e, Form form)
         {
             // Calculate the bounding rectangle for the circle
-
-
             // Draw the circle using the Graphics object from PaintEventArgs
             //set the ball's color random
             color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));

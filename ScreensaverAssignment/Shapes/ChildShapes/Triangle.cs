@@ -10,57 +10,75 @@ namespace ScreensaverAssignment.Shapes
 {
     public class Triangle : Shape
     {
-        public int topX = 400;
-        public int topY = 5000;
-
-        public int leftX = 350;
-        public int leftY = 150;
-
-        public int rightX = 450;
-        public int rightY = 150;
+        //MAKE RETANGLE 
+        public int topX;
+        public int topY;
+        public int leftX;
+        public int leftY;
+        public int rightX;
+        public int rightY;
+        private int ranVar;
+        private Random random = new Random();
+        private Color color;
+        private int XVelocity;
+        private int YVelocity;
+        public Triangle triangle;
 
         public Triangle(int x, int y)
         {
+            ranVar = random.Next(-100, 100);
             topX = x;
             topY = y;
-            leftX = x - 50;
-            leftY = y + 100;
-            rightX = x + 50;
-            rightY = y + 100;
+            leftX = x - ranVar;
+            leftY = y + ranVar;
+            rightX = x + ranVar;
+            rightY = y + ranVar;
+            //CHANGE THE SIZE OF TRIANGLE
+            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
+            
+
         }
 
         public override void Draw(PaintEventArgs e, Form form)
         {
-            e.Graphics.FillPolygon(Brushes.Aquamarine, new Point[] {
+            SolidBrush brush = new SolidBrush(color);
+            e.Graphics.FillPolygon(brush, new Point[] {
 
                 new Point(topX, topY),
                 new Point(leftX, leftY),
                 new Point(rightX, rightY)
 
-            });
+        });
 
         }
 
+        //TODO: IMPLEMENT MOVE FUNCTION FOR TRIANGLE AND RETANGLE
         public override void Move(Form form)
         {
-        topY++; // Move the triangle down
+            XVelocity = random.Next(-30, 30); // Adjust the range as needed
+            YVelocity = random.Next(-30, 30);
 
-        // Update the positions of the left and right vertices accordingly
-        leftY++;
-        rightY++;
+            // Update the triangle's points based on the velocity
+            topX += XVelocity;
+            topY += YVelocity;
+            leftX += XVelocity;
+            leftY += YVelocity;
+            rightX += XVelocity;
+            rightY += YVelocity;
 
-        // Optionally, you can add boundary checks to keep the triangle within the form
-        // For example, you can check if the triangle has reached the bottom of the form
-        if (topY >= form.Height)
-        {
-            // Reset the triangle to the top of the form
-            topY = 0;
-            leftY = 20;
-            rightY = 20;
-        }
+          // Check for collisions with the form boundaries
+            if (topX < 0 || rightX > form.ClientRectangle.Right)
+            {
+                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
+            }
 
-        // Call Invalidate to trigger a repaint of the form
-        form.Invalidate();
+            if (topY < 0 || leftY > form.ClientRectangle.Bottom)
+            {
+                YVelocity = -YVelocity; // Reverse vertical velocity on collision with top or bottom wall
+            }
+
+            // Call Invalidate to trigger a repaint of the form
+            form.Invalidate();
         }
 
 

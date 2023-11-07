@@ -10,69 +10,77 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 {
     public class ImageShape : Shape
     {
-        int x = 0;
-        int y = 0;
+
         char travel;
+
+        public int X;
+        public int Y;
+        private int XVelocity;
+        private int YVelocity;
+        private Random random = new Random();
+        private Image newImage;
+        private PictureBox pictureBox;
 
 
         public ImageShape(int x, int y)
         {
-            Random random = new Random();
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
+            pictureBox = new PictureBox();
             int ran = random.Next(0, 4);
-            if (ran == 0) { travel = 'N'; }
-            if (ran == 1) { travel = 'S'; }
-            if (ran == 2) { travel = 'E'; }
-            if (ran == 3) { travel = 'W'; }
+            newImage = Image.FromFile("..\\..\\dancingGirl.gif");
+            pictureBox.Image = newImage;
+            pictureBox.Size = newImage.Size;
+            pictureBox.Location = new Point(x, y);
 
         }
 
-
-
         public override void Draw(PaintEventArgs e, Form form)
 
-        {
-            Image newImage = Image.FromFile("..\\..\\dancingGirl.gif");
-
-            Console.WriteLine(travel);
-            if (travel == 'N') { y--; }
-            if (travel == 'S') { y++; }
-            if (travel == 'E') { x++; }
-            if (travel == 'W') { x--; }
-
-            if (x == 0)
-            { // met west go east
-                x += 40;
-                travel = 'E';
-            }
-            if (x == form.Width - (newImage.Width + 16)) // met east go west
-            {
-                x -= 40;
-                travel = 'W';
-            }
-            if (y == 0)// met north go south
-            {
-                y++;
-                travel = 'S';
-            }
-            if (y == form.Height)// met south go north
-            {
-                y--;
-                travel = 'N';
-            }
-
-            Console.WriteLine(x + " " + y);
-
-            PointF ulCorner = new PointF(x, y); //upper-left corner of image.
+        {          
+            Console.WriteLine("Draw Image");
+            PointF ulCorner = new PointF(X, Y); //upper-left corner of image.
             e.Graphics.DrawImage(newImage, ulCorner);
 
         }
         public override void Move(Form form)
         {
+            XVelocity = random.Next(-30, 30);
+            YVelocity = random.Next(-30, 30);
+
+            // Get the current location of the PictureBox
+            Point currentLocation = pictureBox.Location;
+
+            // Calculate the new location based on the velocity
+            this.X += XVelocity;
+            this.Y += YVelocity;
+
+            // Check for collisions with the form boundaries
+            if (X < 0 || X + pictureBox.Width > form.ClientRectangle.Right)
+            {
+                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
+            }
+
+            if (Y < 0 || Y + pictureBox.Height > form.ClientRectangle.Bottom)
+            {
+                YVelocity = -YVelocity; // Reverse vertical velocity on collision with top or bottom wall
+            }
+
+            // Set the new location for the PictureBox
+            //pictureBox.Location = new Point(X, Y);
 
         }
 
+
+        public void FlipX()
+        {
+            XVelocity *= -1;
+        }
+
+        public void FlipY()
+        {
+            YVelocity *= -1;
+        }
     }
 }
 
