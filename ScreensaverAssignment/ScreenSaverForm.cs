@@ -102,14 +102,6 @@ namespace ScreensaverAssignment
             int mouseX = e.X;
             int mouseY = e.Y;
 
-            Point[] polygonPoints = new Point[]
-            {
-                new Point(mouseX, mouseY),
-                new Point(150, 50),
-                new Point(200, 100),
-                new Point(150, 150)
-            };
-
             if (ran == 0)
                 shapeList.Add(new Triangle(mouseX, mouseY));
             else if (ran == 1)
@@ -119,7 +111,7 @@ namespace ScreensaverAssignment
             else if (ran == 3)
                 shapeList.Add(new Retangle(mouseX, mouseY));
             else if (ran == 4)
-                shapeList.Add(new Polygon(polygonPoints));
+                shapeList.Add(new Polygon(mouseX, mouseY));
 
 
             Console.WriteLine(mouseX + " " + mouseY + " " + ran);
