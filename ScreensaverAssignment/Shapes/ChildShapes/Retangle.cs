@@ -10,8 +10,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 {
     public class Retangle : Shape
     {
-        public int width; // Adjust the width as needed
-        public int height; // Adjust the height as needed
+        public int width = 74; 
+        public int height = 64; 
         public int topX;
         public int topY;
         private Random random = new Random();
@@ -24,8 +24,6 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             // Initialize the position of the retangle
             this.topX = x;
             this.topY = y;
-            width=random.Next(20,80);
-            height = random.Next(20, 80);
             color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
 
         }
@@ -48,19 +46,24 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             topX += XVelocity;
             topY += YVelocity;
 
+
+
+            // Call Invalidate to trigger a repaint of the form
+            form.Invalidate();
+        }
+
+        public override void CheckWalls(Form form)
+        {
             // Check for collisions with the form boundaries
-            if (topX < 0 ||(topX+width) > form.ClientRectangle.Right)
+            if (topX <= form.ClientRectangle.Left || (topX + width) > form.ClientRectangle.Right)
             {
                 XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
             }
 
-            if (topY < 0 || (topY+height) > form.ClientRectangle.Bottom)
+            if (topY <= form.ClientRectangle.Top || (topY + height) >= form.ClientRectangle.Bottom)
             {
                 YVelocity = -YVelocity; // Reverse vertical velocity on collision with top or bottom wall
             }
-
-            // Call Invalidate to trigger a repaint of the form
-            form.Invalidate();
         }
     }
 }

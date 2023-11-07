@@ -17,26 +17,28 @@ namespace ScreensaverAssignment.Shapes
         public int leftY;
         public int rightX;
         public int rightY;
-        private int ranVar;
+        public int sizeVal=50;
+
         private Random random = new Random();
         private Color color;
+
         private int XVelocity;
         private int YVelocity;
         public Triangle triangle;
 
         public Triangle(int x, int y)
         {
-            ranVar = random.Next(-100, 100);
+            //ranVar = random.Next(-100, 100);
             topX = x;
             topY = y;
-            leftX = x - ranVar;
-            leftY = y + ranVar;
-            rightX = x + ranVar;
-            rightY = y + ranVar;
+            leftX = x - sizeVal;
+            leftY = y + sizeVal;
+            rightX = x + sizeVal;
+            rightY = y + sizeVal;
             //CHANGE THE SIZE OF TRIANGLE
             color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
             
-
+            //Triangle width 100 height 50
         }
 
         public override void Draw(PaintEventArgs e, Form form)
@@ -79,6 +81,31 @@ namespace ScreensaverAssignment.Shapes
 
             // Call Invalidate to trigger a repaint of the form
             form.Invalidate();
+        }
+
+        public override void CheckWalls(Form form)
+        {
+            // Check for collisions with the form boundaries
+            if (leftX <= form.ClientRectangle.Left || rightX >= form.ClientRectangle.Right)
+            {
+                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
+            }
+
+            if (topY <= form.ClientRectangle.Top || rightY> form.ClientRectangle.Bottom)
+            {
+                YVelocity = -YVelocity;
+                // Reverse vertical velocity on collision with top or bottom wall
+            }
+        }
+
+        public void FlipX()
+        {
+            XVelocity *= -1;
+        }
+
+        public void FlipY()
+        {
+            YVelocity *= -1;
         }
 
 

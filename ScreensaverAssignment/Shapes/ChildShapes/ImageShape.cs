@@ -71,6 +71,11 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         }
 
+        public override void CheckWalls(Form form)
+        {
+
+        }
+
 
         public void FlipX()
         {

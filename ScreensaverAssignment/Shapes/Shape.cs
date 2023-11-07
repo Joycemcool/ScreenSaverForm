@@ -7,9 +7,13 @@ using System.Windows.Forms;
 
 namespace ScreensaverAssignment.Shapes
 {
+
     public abstract class Shape
     {
+
         public abstract void Draw(PaintEventArgs e, Form form);
         public abstract void Move(Form form);
+
+        public abstract void CheckWalls(Form form);
     }
 }

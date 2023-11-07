@@ -52,7 +52,14 @@ namespace ScreensaverAssignment
             foreach (Shape shape in shapeList)
             {
                 shape.Move(this);
+
+                
             }
+
+
+            //check for any new collisions
+
+            CheckForCollisions();
 
             this.Invalidate();
 
@@ -118,6 +125,11 @@ namespace ScreensaverAssignment
 
         }
         private void panel1_Paint(object sender, PaintEventArgs e) { }
+
+        private void CheckForCollisions()
+        {
+
+        }
 
 
     } //End class form
