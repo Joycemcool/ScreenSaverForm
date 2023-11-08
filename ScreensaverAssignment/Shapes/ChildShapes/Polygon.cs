@@ -16,13 +16,13 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         private int radius = 50; 
         private int sides = 5;
         private Color color;
-        public int topX;
-        public int topY;
+        //public int topX { get; set; }
+        //public int topY { get; set; }
         public PictureBox pentagonBox;
         private int XVelocity;
         private int YVelocity;
         public Point[] points;   
-        public Polygon(int x, int y)
+        public Polygon(int x, int y):base(x, y)
         {
             this.topX = x;
             this.topY = y;
@@ -39,26 +39,62 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
                 int y1 = topY + (int)(radius * Math.Sin(angle));
                 points[i] = new Point(x1, y1);
             }
-            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
+            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, points);
-            pentagonBox = new PictureBox();
+            XVelocity = random.Next(-100, 100); // Adjust the range as needed
+            YVelocity = random.Next(-100, 100);
 
         }
 
         public override void Move(Form form)
         {
-            XVelocity = random.Next(-30, 30); // Adjust the range as needed
-            YVelocity = random.Next(-30, 30);
-
             this.topX += XVelocity;
             this.topY += YVelocity;
-
         }
 
         public override void CheckWalls(Form form)
         {
+            // Check for collisions with the form boundaries
+            if (topX <= form.ClientRectangle.Left){
+                FlipX();
+                Move(form);
+            }
+            else if (topX + radius/2 >= form.ClientRectangle.Right)
+            {
+                FlipX();
+                Move(form);
+            }
+            if (topY <= form.ClientRectangle.Top)
+            {
+                FlipY();
+                Move(form);
+            }
+            else if(topY + radius/2>= form.ClientRectangle.Bottom)
+            {
+                FlipY();
+                Move(form);
+            }                 
+        }
 
+        public override void FlipX()
+        {
+            XVelocity *= -1;
+        }
+
+        public override void FlipY()
+        {
+            YVelocity *= -1;
+        }
+
+        public int GetTopX()
+        {
+            return topX;
+        }
+
+        public int GetTopY()
+        {
+            return topY;
         }
 
     }

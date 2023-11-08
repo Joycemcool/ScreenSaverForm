@@ -14,8 +14,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         public int radius;
         public Rectangle circleBox;
-        public int X;
-        public int Y;
+        //public int topX { get; set; }
+        //public int topY { get; set; }
         public int size;
         private int XVelocity;
         private int YVelocity;
@@ -25,18 +25,18 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         public int CurrentY { get { return circleBox.Y; } }
         public int Size { get { return size; } }
 
-        public Circle(int x, int y)
+        public Circle(int x, int y) :base(x, y)
         {
-            this.X = x;
-            this.Y = y;
-
+            this.topX = x;
+            this.topY = y;
 
             // Initialize the velocities randomly within a range
             radius = random.Next(15, 80);
-            circleBox = new Rectangle(X, Y, radius, radius);
+            circleBox = new Rectangle(topX, topY, radius, radius);
             size = circleBox.Width;
+            XVelocity = random.Next(-100, 100);
+            YVelocity = random.Next(-100, 100);
 
-            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
 
         }
         public override void Draw(PaintEventArgs e, Form form)
@@ -44,7 +44,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             // Calculate the bounding rectangle for the circle
             // Draw the circle using the Graphics object from PaintEventArgs
             //set the ball's color random
-            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
+            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillEllipse(brush, circleBox);
 
@@ -52,11 +52,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         public override void Move(Form form)
         {
-            XVelocity = random.Next(-30, 30); 
-            YVelocity = random.Next(-30,30);
             this.circleBox.X += XVelocity;
             this.circleBox.Y += YVelocity;
-
         }
 
         public override void CheckWalls(Form form)
@@ -64,15 +61,36 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             // Check for collisions with the form boundaries
             if (circleBox.Left <= form.ClientRectangle.Left || circleBox.Right >= form.ClientRectangle.Right)
             {
-                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
+                FlipX();
+                Move(form);
             }
 
             if (circleBox.Top <= form.ClientRectangle.Top || circleBox.Bottom > form.ClientRectangle.Bottom)
             {
-                YVelocity = -YVelocity; 
-                // Reverse vertical velocity on collision with top or bottom wall
+                FlipY();
+                Move(form);
             }
         }
+
+        public override void FlipX()
+        {
+            XVelocity *= -1;
+        }
+
+        public override void FlipY()
+        {
+            YVelocity *= -1;
+        }
+        public int GetTopX()
+        {
+            return topX;
+        }
+
+        public int GetTopY()
+        {
+            return topY;
+        }
+
 
     }
 }

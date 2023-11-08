@@ -29,54 +29,63 @@ namespace ScreensaverAssignment
 
         private Random rand = new Random();
 
+        private int formWidth = 500;
+        private int formHeigh = 500;
+        private Retangle retangle;
         public ScreenSaverForm()
         {
             //Initialize and configure the pictureBox
             pictureBox = new PictureBox();
-            pictureBox.Location = new Point(100, 100);
-            pictureBox.Size = new Size(200, 200);
-            pictureBox.BackColor = Color.White;
 
-            // Add the PictureBox to the form
-            this.Controls.Add(pictureBox);
+            retangle = new Retangle(formWidth, formHeigh);
 
             InitializeComponent();
             this.Paint += new PaintEventHandler(ScreenSaverForm_Paint);
-            pictureBox.Click += new EventHandler(PictureBox_Click);
+
 
         }
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("Tick");
+
+            foreach (Shape shapeA in shapeList)
+            {
+                if(shapeA.GetType().ToString() == "ScreensaverAssignment.Shapes.ChildShapes.Retangle")
+                {
+                    foreach (Shape shapeB in shapeList)
+                    {
+                        if(shapeB.GetType().ToString() == "ScreensaverAssignment.Shapes.ChildShapes.Retangle")
+                        {
+                            Console.WriteLine("we are both Retangle");
+
+                        }
+
+                    }
+                }
+
+                shapeA.Move(this);
+            }
 
             foreach (Shape shape in shapeList)
             {
-                shape.Move(this);
-
-                
+                shape.CheckWalls(this);
             }
 
 
             //check for any new collisions
 
-            CheckForCollisions();
-
             this.Invalidate();
+            //ScreensaverAssignment.Shapes.ChildShapes.Retangle
 
         }
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
-        {
-            
+        {           
             timer.Interval = 200;
             timer.Elapsed += OnTimedEvent;
             this.MouseClick += (System.Windows.Forms.MouseEventHandler)MouseClickHandler;     
-            
-            //Resize form would be resized to  the entire screen
-            //Bounds = Screen.PrimaryScreen.Bounds;
+            this.Size = new Size(formWidth, formHeigh);
             timer.Start();
         }
-
 
         //Draw custom shapes on the form
         private void ScreenSaverForm_Paint(object sender, PaintEventArgs e)
@@ -120,13 +129,10 @@ namespace ScreensaverAssignment
             else if (ran == 4)
                 shapeList.Add(new Polygon(mouseX, mouseY));
 
-
-            Console.WriteLine(mouseX + " " + mouseY + " " + ran);
-
         }
         private void panel1_Paint(object sender, PaintEventArgs e) { }
 
-        private void CheckForCollisions()
+        private void CheckForCollisions(Shape shape)
         {
 
         }

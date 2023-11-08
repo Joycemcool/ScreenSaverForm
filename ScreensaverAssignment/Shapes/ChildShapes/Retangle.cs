@@ -12,19 +12,20 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
     {
         public int width = 74; 
         public int height = 64; 
-        public int topX;
-        public int topY;
+        public int topX { get; set; }
+        public int topY { get; set; }
         private Random random = new Random();
         private Color color;
         private int XVelocity;
         private int YVelocity;
 
-        public Retangle(int x, int y)
+        public Retangle(int x, int y): base (x, y)
         {
             // Initialize the position of the retangle
             this.topX = x;
             this.topY = y;
-            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
+            XVelocity = random.Next(-100, 100); // Adjust the range as needed
+            YVelocity = random.Next(-100, 100);
 
         }
         public override void Draw(PaintEventArgs e, Form form)
@@ -33,6 +34,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             // Calculate the bounding rectangle for the circle
             Rectangle boundingRect = new Rectangle(topX, topY, width, height);
 
+            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
+
             //// Draw the circle using the Graphics object from PaintEventArgs
             e.Graphics.FillRectangle(brush, boundingRect);
 
@@ -40,30 +43,57 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         public override void Move(Form form)
         {
-            XVelocity = random.Next(-30, 30); // Adjust the range as needed
-            YVelocity = random.Next(-30, 30);
-
             topX += XVelocity;
             topY += YVelocity;
 
-
-
-            // Call Invalidate to trigger a repaint of the form
             form.Invalidate();
         }
 
         public override void CheckWalls(Form form)
         {
             // Check for collisions with the form boundaries
-            if (topX <= form.ClientRectangle.Left || (topX + width) > form.ClientRectangle.Right)
+            if (topX <= form.ClientRectangle.Left || (topX + width) >= form.ClientRectangle.Right)
             {
-                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
+                FlipX();
+                Move(form);
             }
 
             if (topY <= form.ClientRectangle.Top || (topY + height) >= form.ClientRectangle.Bottom)
             {
-                YVelocity = -YVelocity; // Reverse vertical velocity on collision with top or bottom wall
+                FlipY();
+                Move(form);
+
             }
         }
+
+        public void CollidesWith(Rectangle other)
+        {
+           if( topX < other.X + other.Width &&
+               topX + width > other.X &&
+               topY < other.Y + other.Height &&
+               topY + height > other.Y)
+            {
+            }
+        }
+
+        public override void FlipX()
+        {
+            XVelocity *= -1;
+        }
+
+        public override void FlipY()
+        {
+            YVelocity *= -1;
+        }
+        public int GetTopX()
+        {
+            return topX;
+        }
+
+        public int GetTopY()
+        {
+            return topY;
+        }
+
     }
 }

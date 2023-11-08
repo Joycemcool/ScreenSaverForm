@@ -11,8 +11,8 @@ namespace ScreensaverAssignment.Shapes
     public class Triangle : Shape
     {
         //MAKE RETANGLE 
-        public int topX;
-        public int topY;
+        //public int topX { get; set; }
+        //public int topY { get; set; }
         public int leftX;
         public int leftY;
         public int rightX;
@@ -26,7 +26,7 @@ namespace ScreensaverAssignment.Shapes
         private int YVelocity;
         public Triangle triangle;
 
-        public Triangle(int x, int y)
+        public Triangle(int x, int y) : base(x, y)
         {
             //ranVar = random.Next(-100, 100);
             topX = x;
@@ -36,13 +36,14 @@ namespace ScreensaverAssignment.Shapes
             rightX = x + sizeVal;
             rightY = y + sizeVal;
             //CHANGE THE SIZE OF TRIANGLE
-            color = Color.FromArgb(255, random.Next(255), random.Next(255), random.Next(255));
-            
+            XVelocity = random.Next(-100, 100); // Adjust the range as needed
+            YVelocity = random.Next(-100, 100);
             //Triangle width 100 height 50
         }
 
         public override void Draw(PaintEventArgs e, Form form)
         {
+            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, new Point[] {
 
@@ -57,10 +58,7 @@ namespace ScreensaverAssignment.Shapes
         //TODO: IMPLEMENT MOVE FUNCTION FOR TRIANGLE AND RETANGLE
         public override void Move(Form form)
         {
-            XVelocity = random.Next(-30, 30); // Adjust the range as needed
-            YVelocity = random.Next(-30, 30);
-
-            // Update the triangle's points based on the velocity
+  // Update the triangle's points based on the velocity
             topX += XVelocity;
             topY += YVelocity;
             leftX += XVelocity;
@@ -68,16 +66,6 @@ namespace ScreensaverAssignment.Shapes
             rightX += XVelocity;
             rightY += YVelocity;
 
-          // Check for collisions with the form boundaries
-            if (topX < 0 || rightX > form.ClientRectangle.Right)
-            {
-                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
-            }
-
-            if (topY < 0 || leftY > form.ClientRectangle.Bottom)
-            {
-                YVelocity = -YVelocity; // Reverse vertical velocity on collision with top or bottom wall
-            }
 
             // Call Invalidate to trigger a repaint of the form
             form.Invalidate();
@@ -86,27 +74,54 @@ namespace ScreensaverAssignment.Shapes
         public override void CheckWalls(Form form)
         {
             // Check for collisions with the form boundaries
-            if (leftX <= form.ClientRectangle.Left || rightX >= form.ClientRectangle.Right)
-            {
-                XVelocity = -XVelocity; // Reverse horizontal velocity on collision with left or right wall
-            }
+            if (leftX <= form.ClientRectangle.Left)
+            { 
+                FlipX();
+                Move(form);
 
-            if (topY <= form.ClientRectangle.Top || rightY> form.ClientRectangle.Bottom)
+            }
+            else if(rightX >= form.ClientRectangle.Right)
             {
-                YVelocity = -YVelocity;
-                // Reverse vertical velocity on collision with top or bottom wall
+
+                FlipX();
+                Move(form);
+
+            }
+            if (topY <= form.ClientRectangle.Top)
+            {
+
+                FlipY();
+                Move(form);
+
+            }
+            else if (rightY >= form.ClientRectangle.Bottom)
+            {
+
+                FlipY();
+                Move(form);
+
             }
         }
 
-        public void FlipX()
+        public override void FlipX()
         {
             XVelocity *= -1;
         }
 
-        public void FlipY()
+        public override void FlipY()
         {
             YVelocity *= -1;
         }
+        public int GetTopX()
+        {
+            return topX;
+        }
+
+        public int GetTopY()
+        {
+            return topY;
+        }
+
 
 
     }//end class
