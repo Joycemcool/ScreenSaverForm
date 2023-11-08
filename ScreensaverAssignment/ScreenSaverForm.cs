@@ -47,23 +47,42 @@ namespace ScreensaverAssignment
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
 
+            foreach (Shape shape in shapeList)
+            {
+
+
+                shape.Move(this);
+            }
+
             foreach (Shape shapeA in shapeList)
             {
-                if(shapeA.GetType().ToString() == "ScreensaverAssignment.Shapes.ChildShapes.Retangle")
+                foreach (Shape shapeB in shapeList)
                 {
-                    foreach (Shape shapeB in shapeList)
-                    {
-                        if(shapeB.GetType().ToString() == "ScreensaverAssignment.Shapes.ChildShapes.Retangle")
-                        {
-                            Console.WriteLine("we are both Retangle");
+                    if (shapeA !=shapeB)// && (shapeB.topX == shapeA.topX || shapeB.topY == shapeA.topY) )
+                     {
+                        int rangeX = 50; 
+                        int rangeY = 50; 
 
+                        bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
+                        bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
+
+                        if (meetOnX && meetOnY)
+                        {
+                            Console.WriteLine("Shapes meet: shapeA and shapeB");
+                            shapeA.FlipX();shapeA.FlipY();
+                            shapeB.FlipY();shapeB.FlipX();
+                            shapeA.Move(this);
+                            shapeB.Move(this);
                         }
+                        // Console.WriteLine("we meet");
+                        //else { Console.WriteLine("we don't meet"); }
 
                     }
-                }
 
-                shapeA.Move(this);
+                }
             }
+ 
+
 
             foreach (Shape shape in shapeList)
             {
