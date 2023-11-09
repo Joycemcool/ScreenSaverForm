@@ -61,15 +61,14 @@ namespace ScreensaverAssignment
                 {
                     if (shapeA !=shapeB)// && (shapeB.topX == shapeA.topX || shapeB.topY == shapeA.topY) )
                      {
-                        //if(shapeA == shapeB)
-                        //{
+                        
+                        int rangeX = 20; 
+                        int rangeY = 20;
+                        int negRangX = -20;
+                        int negRangY = -20;
 
-                        //}
-                        int rangeX = 50; 
-                        int rangeY = 50; 
-
-                        bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
-                        bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
+                        bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) >=negRangX ||Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
+                        bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) >= negRangY || Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
 
                         if (meetOnX && meetOnY)
                         {
@@ -79,8 +78,6 @@ namespace ScreensaverAssignment
                             shapeA.Move(this);
                             shapeB.Move(this);
                         }
-                        // Console.WriteLine("we meet");
-                        //else { Console.WriteLine("we don't meet"); }
 
                     }
 
@@ -95,10 +92,7 @@ namespace ScreensaverAssignment
             }
 
 
-            //check for any new collisions
-
             this.Invalidate();
-            //ScreensaverAssignment.Shapes.ChildShapes.Retangle
 
         }
 
@@ -144,8 +138,8 @@ namespace ScreensaverAssignment
 
             if (ran == 0)
                 shapeList.Add(new Triangle(mouseX, mouseY));
-            else if (ran == 1)
-                shapeList.Add(new ImageShape(mouseX, mouseY));
+            //else if (ran == 1)
+            //    shapeList.Add(new ImageShape(mouseX, mouseY));
             else if (ran == 2)
                 shapeList.Add(new Circle(mouseX, mouseY));
             else if (ran == 3)
@@ -158,10 +152,6 @@ namespace ScreensaverAssignment
         }
         private void panel1_Paint(object sender, PaintEventArgs e) { }
 
-        private void CheckForCollisions(Shape shape)
-        {
-
-        }
 
 
     } //End class form
