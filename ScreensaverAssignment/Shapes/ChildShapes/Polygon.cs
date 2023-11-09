@@ -42,7 +42,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, points);
-            XVelocity = random.Next(-100, 100); // Adjust the range as needed
+            XVelocity = random.Next(-100, 100); 
             YVelocity = random.Next(-100, 100);
 
         }
@@ -55,7 +55,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         public override void CheckWalls(Form form)
         {
-            // Check for collisions with the form boundaries
+            
             if (topX <= form.ClientRectangle.Left){
                 FlipX();
                 Move(form);

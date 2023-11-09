@@ -29,9 +29,6 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             this.topY = y;
             XVelocity = random.Next(-100, 100); 
             YVelocity = random.Next(-100, 100);
-
-
-
         }
         public override void Draw(PaintEventArgs e, Form form)
         {
@@ -74,15 +71,6 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             }
         }
 
-        public void CollidesWith(Rectangle other)
-        {
-           if( topX < other.X + other.Width &&
-               topX + width > other.X &&
-               topY < other.Y + other.Height &&
-               topY + height > other.Y)
-            {
-            }
-        }
 
         public override void FlipX()
         {

@@ -52,7 +52,7 @@ namespace ScreensaverAssignment
 
             foreach (Shape shape in shapeList)
             {
-               shape.Move(this);
+                shape.Move(this);
             }
 
             foreach (Shape shapeA in shapeList)
@@ -61,6 +61,10 @@ namespace ScreensaverAssignment
                 {
                     if (shapeA !=shapeB)// && (shapeB.topX == shapeA.topX || shapeB.topY == shapeA.topY) )
                      {
+                        //if(shapeA == shapeB)
+                        //{
+
+                        //}
                         int rangeX = 50; 
                         int rangeY = 50; 
 
@@ -100,7 +104,7 @@ namespace ScreensaverAssignment
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
         {           
-            timer.Interval = 200;
+            timer.Interval = 500;
             timer.Elapsed += OnTimedEvent;
             this.MouseClick += (System.Windows.Forms.MouseEventHandler)MouseClickHandler;     
             this.Size = new Size(formWidth, formHeigh);
