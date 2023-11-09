@@ -14,15 +14,15 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 
         public int radius;
         public Rectangle circleBox;
-        //public int topX { get; set; }
-        //public int topY { get; set; }
+        public int topX { get; set; }
+        public int topY { get; set; }
         public int size;
         private int XVelocity;
         private int YVelocity;
         private Color color;
         private Random random = new Random();
-        public int CurrentX { get { return circleBox.X; } }
-        public int CurrentY { get { return circleBox.Y; } }
+        //public int CurrentX { get { return circleBox.X; } }
+        //public int CurrentY { get { return circleBox.Y; } }
         public int Size { get { return size; } }
 
         public Circle(int x, int y) :base(x, y)

@@ -32,6 +32,9 @@ namespace ScreensaverAssignment
         private int formWidth = 500;
         private int formHeigh = 500;
         private Retangle retangle;
+
+
+
         public ScreenSaverForm()
         {
             //Initialize and configure the pictureBox
@@ -49,9 +52,7 @@ namespace ScreensaverAssignment
 
             foreach (Shape shape in shapeList)
             {
-
-
-                shape.Move(this);
+               shape.Move(this);
             }
 
             foreach (Shape shapeA in shapeList)
@@ -133,7 +134,7 @@ namespace ScreensaverAssignment
             
             
             Random random = new Random();
-            int ran = random.Next(0, 5);
+            int ran = random.Next(0, 6);
             int mouseX = e.X;
             int mouseY = e.Y;
 
@@ -147,6 +148,8 @@ namespace ScreensaverAssignment
                 shapeList.Add(new Retangle(mouseX, mouseY));
             else if (ran == 4)
                 shapeList.Add(new Polygon(mouseX, mouseY));
+            else if (ran == 5)
+                shapeList.Add(new PictureBoxShape(mouseX, mouseY));
 
         }
         private void panel1_Paint(object sender, PaintEventArgs e) { }

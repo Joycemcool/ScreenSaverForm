@@ -24,8 +24,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             this.topY = y;
             pictureBox = new PictureBox();
             int ran = random.Next(0, 4);
-            newImage = Image.FromFile("..\\..\\dancingGirl.gif");
-            pictureBox.Image = newImage;
+            newImage = Image.FromFile("..\\..\\dancingGirl.gif");            pictureBox.Image = newImage;
             pictureBox.Size = newImage.Size;
             pictureBox.Location = new Point(x, y);
             XVelocity = random.Next(-100, 100);

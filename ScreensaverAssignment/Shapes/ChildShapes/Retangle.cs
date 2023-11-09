@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,23 +19,30 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         private Color color;
         private int XVelocity;
         private int YVelocity;
+        public Color GradientColor1 { get; set; }
+        public Color GradientColor2 { get; set; }
 
         public Retangle(int x, int y): base (x, y)
         {
             // Initialize the position of the retangle
             this.topX = x;
             this.topY = y;
-            XVelocity = random.Next(-100, 100); // Adjust the range as needed
+            XVelocity = random.Next(-100, 100); 
             YVelocity = random.Next(-100, 100);
+
+
 
         }
         public override void Draw(PaintEventArgs e, Form form)
         {
-            SolidBrush brush = new SolidBrush(color);
+            // SolidBrush brush = new SolidBrush(color);
+            GradientColor1 = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
+            GradientColor2 = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
+
             // Calculate the bounding rectangle for the circle
             Rectangle boundingRect = new Rectangle(topX, topY, width, height);
-
-            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
+            LinearGradientBrush brush = new LinearGradientBrush(boundingRect, GradientColor1, GradientColor2, LinearGradientMode.Horizontal);
+            //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
 
             //// Draw the circle using the Graphics object from PaintEventArgs
             e.Graphics.FillRectangle(brush, boundingRect);
