@@ -31,7 +31,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             this.topY = y;
 
             // Initialize the velocities randomly within a range
-            radius = random.Next(15, 80);
+            //radius = random.Next(15, 80);
+            radius = 100;
             circleBox = new Rectangle(topX, topY, radius, radius);
             size = circleBox.Width;
             XVelocity = random.Next(-100, 100);
@@ -41,8 +42,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         }
         public override void Draw(PaintEventArgs e, Form form)
         {
-            // Calculate the bounding rectangle for the circle
-            // Draw the circle using the Graphics object from PaintEventArgs
+
             //set the ball's color random
             //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             color = Color.Red;
@@ -64,14 +64,14 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             {
                 FlipX();
                 Move(form);
-                changeColor();
+
             }
 
-            if (circleBox.Top <= form.ClientRectangle.Top || circleBox.Bottom > form.ClientRectangle.Bottom)
+            if (circleBox.Top <= form.ClientRectangle.Top || circleBox.Bottom >= form.ClientRectangle.Bottom)
             {
                 FlipY();
                 Move(form);
-                changeColor();
+
             }
         }
 
@@ -94,12 +94,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             return topY;
         }
 
-        public void changeColor()
-        {
-            color = Color.Green;
-            //SolidBrush brush = new SolidBrush(color);
-            //e.Graphics.FillEllipse(brush, circleBox);
-        }
+
 
     }
 }

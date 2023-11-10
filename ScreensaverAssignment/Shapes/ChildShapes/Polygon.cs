@@ -26,7 +26,9 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         {
             this.topX = x;
             this.topY = y;
-         }
+            XVelocity = random.Next(-100, 100);
+            YVelocity = random.Next(-100, 100);
+        }
 
         public override void Draw(PaintEventArgs e, Form form)
         {
@@ -42,8 +44,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, points);
-            XVelocity = random.Next(-100, 100); 
-            YVelocity = random.Next(-100, 100);
+
 
         }
 

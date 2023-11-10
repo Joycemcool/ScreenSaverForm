@@ -25,8 +25,6 @@ namespace ScreensaverAssignment
 
         System.Timers.Timer timer = new System.Timers.Timer(50);
         // Define a PictureBox control to display an image (or shape)
-        private PictureBox pictureBox;
-
         private Random rand = new Random();
 
         private int formWidth = 500;
@@ -38,7 +36,6 @@ namespace ScreensaverAssignment
         public ScreenSaverForm()
         {
             //Initialize and configure the pictureBox
-            pictureBox = new PictureBox();
 
             retangle = new Retangle(formWidth, formHeigh);
 
@@ -46,6 +43,15 @@ namespace ScreensaverAssignment
             this.Paint += new PaintEventHandler(ScreenSaverForm_Paint);
 
 
+        }
+
+        private void ScreenSaverForm_Load(object sender, EventArgs e)
+        {
+            timer.Interval = 200;
+            timer.Elapsed += OnTimedEvent;
+            this.MouseClick += (System.Windows.Forms.MouseEventHandler)MouseClickHandler;
+            this.Size = new Size(formWidth, formHeigh);
+            timer.Start();
         }
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
@@ -57,31 +63,36 @@ namespace ScreensaverAssignment
 
             foreach (Shape shapeA in shapeList)
             {
-                foreach (Shape shapeB in shapeList)
+                if (shapeA.GetType().ToString() == "ScreensaverAssignment.Shapes.ChildShapes.Circle")
                 {
-                    if (shapeA !=shapeB)// && (shapeB.topX == shapeA.topX || shapeB.topY == shapeA.topY) )
-                     {
-                        
-                        int rangeX = 20; 
-                        int rangeY = 20;
-                        int negRangX = -20;
-                        int negRangY = -20;
+                    foreach (Shape shapeB in shapeList)
+                    {
+                                    if (shapeA !=shapeB && shapeA.GetType().ToString()== shapeB.GetType().ToString())
+                                     {
+                                        Console.WriteLine(shapeA.GetType().ToString());
+                            
+                                        int rangeX = 50; 
+                                        int rangeY = 50;
+                                        int negRangX = -50;
+                                        int negRangY = -50;
 
-                        bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) >=negRangX ||Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
-                        bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) >= negRangY || Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
+                                        bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) >=negRangX ||Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
+                                        bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) >= negRangY || Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
 
-                        if (meetOnX && meetOnY)
-                        {
-                            Console.WriteLine("Shapes meet: shapeA and shapeB");
-                            shapeA.FlipX();shapeA.FlipY();
-                            shapeB.FlipY();shapeB.FlipX();
-                            shapeA.Move(this);
-                            shapeB.Move(this);
-                        }
+                                        if (meetOnX && meetOnY)
+                                        {
+                                            Console.WriteLine("Shapes meet: shapeA and shapeB");
+                                            shapeA.FlipX();shapeA.FlipY();
+                                            shapeB.FlipY();shapeB.FlipX();
+                                            shapeA.Move(this);
+                                            shapeB.Move(this);
+                                        }
+
+                                    }
 
                     }
-
                 }
+               
             }
  
 
@@ -96,14 +107,7 @@ namespace ScreensaverAssignment
 
         }
 
-        private void ScreenSaverForm_Load(object sender, EventArgs e)
-        {           
-            timer.Interval = 500;
-            timer.Elapsed += OnTimedEvent;
-            this.MouseClick += (System.Windows.Forms.MouseEventHandler)MouseClickHandler;     
-            this.Size = new Size(formWidth, formHeigh);
-            timer.Start();
-        }
+
 
         //Draw custom shapes on the form
         private void ScreenSaverForm_Paint(object sender, PaintEventArgs e)
@@ -113,40 +117,26 @@ namespace ScreensaverAssignment
                 shapeList[i].Draw(e, this);
         }
 
-        private void PictureBox_Click(object sender, EventArgs e)
-        {
-            // Handle the click event of the PictureBox (e.g., change the image or shape)
-            // Change position
 
-            int newX = rand.Next(0, this.ClientSize.Width - pictureBox.Width);
-            int newY = rand.Next(0, this.ClientSize.Height - pictureBox.Height);
-            pictureBox.Location = new Point(newX, newY);
-
-            // Change the PictureBox's background color to a random color
-            Color randomColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
-            pictureBox.BackColor = randomColor;
-        }
 
         private void MouseClickHandler(object sender, MouseEventArgs e)
         {
             
             
             Random random = new Random();
-            int ran = random.Next(0, 6);
+            int ran = random.Next(0, 5);
             int mouseX = e.X;
             int mouseY = e.Y;
 
             if (ran == 0)
                 shapeList.Add(new Triangle(mouseX, mouseY));
-            //else if (ran == 1)
-            //    shapeList.Add(new ImageShape(mouseX, mouseY));
-            else if (ran == 2)
+            else if (ran == 1)
                 shapeList.Add(new Circle(mouseX, mouseY));
-            else if (ran == 3)
+            else if (ran == 2)
                 shapeList.Add(new Retangle(mouseX, mouseY));
-            else if (ran == 4)
+            else if (ran == 3)
                 shapeList.Add(new Polygon(mouseX, mouseY));
-            else if (ran == 5)
+            else if (ran == 4)
                 shapeList.Add(new PictureBoxShape(mouseX, mouseY));
 
         }
