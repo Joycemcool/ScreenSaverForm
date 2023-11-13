@@ -21,29 +21,23 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         private int YVelocity;
         private Color color;
         private Random random = new Random();
-        //public int CurrentX { get { return circleBox.X; } }
-        //public int CurrentY { get { return circleBox.Y; } }
+
         public int Size { get { return size; } }
 
         public Circle(int x, int y) :base(x, y)
         {
             this.topX = x;
             this.topY = y;
-
-            // Initialize the velocities randomly within a range
-            //radius = random.Next(15, 80);
             radius = 100;
             circleBox = new Rectangle(topX, topY, radius, radius);
             size = circleBox.Width;
-            XVelocity = random.Next(-100, 100);
+            XVelocity = random.Next(-100,100);
             YVelocity = random.Next(-100, 100);
 
 
         }
         public override void Draw(PaintEventArgs e, Form form)
         {
-
-            //set the ball's color random
             //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
             color = Color.Red;
             SolidBrush brush = new SolidBrush(color);
@@ -55,8 +49,15 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         {
             this.circleBox.X += XVelocity;
             this.circleBox.Y += YVelocity;
+
         }
 
+        private void ChangeBallColor()
+        {
+            // Change the ball color to a new color
+            Random random = new Random();
+            color = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+        }
         public override void CheckWalls(Form form)
         {
             // Check for collisions with the form boundaries
@@ -64,6 +65,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             {
                 FlipX();
                 Move(form);
+                ChangeBallColor();
+
 
             }
 

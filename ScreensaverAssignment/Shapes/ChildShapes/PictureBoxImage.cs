@@ -32,9 +32,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             PictureBox.Size = new Size(50, 50);
             PictureBox.Image =newImage;
             PictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
-            //PictureBox.Location = new Point(topX, topY);
-            XVelocity = random.Next(-100, 100); // Adjust the range as needed
-            YVelocity = random.Next(-100, 100);
+            XVelocity = random.Next(-30, 30); 
+            YVelocity = random.Next(-30, 30);
         }
 
         public override void Draw(PaintEventArgs e, Form form)
@@ -47,6 +46,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             {
                 form.Controls.Add(PictureBox);
             }
+
+
         }
 
         public override void Move(Form form)
@@ -62,7 +63,6 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
                 PictureBox.Location = new Point(topX, topY);
             }
 
-            form.Invalidate();
         }
 
         public override void CheckWalls(Form form)

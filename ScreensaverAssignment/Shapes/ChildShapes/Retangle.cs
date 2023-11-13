@@ -27,8 +27,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             // Initialize the position of the retangle
             this.topX = x;
             this.topY = y;
-            XVelocity = random.Next(-100, 100); 
-            YVelocity = random.Next(-100, 100);
+            XVelocity = random.Next(-30, 30); 
+            YVelocity = random.Next(-30, 30);
         }
         public override void Draw(PaintEventArgs e, Form form)
         {
@@ -51,7 +51,6 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             topX += XVelocity;
             topY += YVelocity;
 
-            form.Invalidate();
         }
 
         public override void CheckWalls(Form form)

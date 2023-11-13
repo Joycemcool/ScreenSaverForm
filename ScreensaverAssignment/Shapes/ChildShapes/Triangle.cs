@@ -36,14 +36,15 @@ namespace ScreensaverAssignment.Shapes
             rightX = x + sizeVal;
             rightY = y + sizeVal;
             //CHANGE THE SIZE OF TRIANGLE
-            XVelocity = random.Next(-100, 100); // Adjust the range as needed
-            YVelocity = random.Next(-100, 100);
+            XVelocity = random.Next(-30, 30); // Adjust the range as needed
+            YVelocity = random.Next(-30, 30);
             //Triangle width 100 height 50
         }
 
         public override void Draw(PaintEventArgs e, Form form)
         {
-            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
+            //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
+            color = Color.Pink;
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, new Point[] {
 
@@ -52,6 +53,7 @@ namespace ScreensaverAssignment.Shapes
                 new Point(rightX, rightY)
 
         });
+
 
         }
 
@@ -66,9 +68,7 @@ namespace ScreensaverAssignment.Shapes
             rightX += XVelocity;
             rightY += YVelocity;
 
-
             // Call Invalidate to trigger a repaint of the form
-            form.Invalidate();
         }
 
         public override void CheckWalls(Form form)

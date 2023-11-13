@@ -15,34 +15,26 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using System.Net.NetworkInformation;
 using ScreensaverAssignment.Shapes;
 using ScreensaverAssignment.Shapes.ChildShapes;
+//Keep color of one shape changed, the others don't change. 
 
 namespace ScreensaverAssignment
 {
     public partial class ScreenSaverForm : Form
     {
-
         List<Shape> shapeList = new List<Shape>();
 
         System.Timers.Timer timer = new System.Timers.Timer(50);
-        // Define a PictureBox control to display an image (or shape)
-        private Random rand = new Random();
 
-        private int formWidth = 500;
-        private int formHeigh = 500;
-        private Retangle retangle;
+        private int formWidth = 900;
+        private int formHeigh = 900;
+        private Retangle rectangle;
 
-
-
+        //Constructor
         public ScreenSaverForm()
         {
-            //Initialize and configure the pictureBox
-
-            retangle = new Retangle(formWidth, formHeigh);
-
+            rectangle = new Retangle(formWidth, formHeigh);
             InitializeComponent();
             this.Paint += new PaintEventHandler(ScreenSaverForm_Paint);
-
-
         }
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
@@ -53,10 +45,12 @@ namespace ScreensaverAssignment
             this.Size = new Size(formWidth, formHeigh);
             timer.Start();
         }
+
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
+            List<Shape> shapeListCopy = shapeList.ToList();
 
-            foreach (Shape shape in shapeList)
+            foreach (Shape shape in shapeListCopy)
             {
                 shape.Move(this);
             }
@@ -71,15 +65,20 @@ namespace ScreensaverAssignment
                                      {
                                         Console.WriteLine(shapeA.GetType().ToString());
                             
-                                        int rangeX = 50; 
-                                        int rangeY = 50;
-                                        int negRangX = -50;
-                                        int negRangY = -50;
+                                        int rangeX = 100; 
+                                        int rangeY = 100;
+                                        int negRangX = -100;
+                                        int negRangY = -100;
 
-                                        bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) >=negRangX ||Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
-                                        bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) >= negRangY || Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
+                            //bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
+                            //bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
 
-                                        if (meetOnX && meetOnY)
+                            //bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) >= negRangX || Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
+                            //bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) >= negRangY || Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
+
+                            bool meetOnX = (shapeB.topX - shapeA.topX) >= negRangX || (shapeB.topX - shapeA.topX) <= rangeX;
+                            bool meetOnY =(shapeB.topY - shapeA.topY) >= negRangY || (shapeB.topY - shapeA.topY) <= rangeY;
+                            if (meetOnX && meetOnY)
                                         {
                                             Console.WriteLine("Shapes meet: shapeA and shapeB");
                                             shapeA.FlipX();shapeA.FlipY();
@@ -97,7 +96,8 @@ namespace ScreensaverAssignment
  
 
 
-            foreach (Shape shape in shapeList)
+            foreach (Shape shape in shapeListCopy)
+
             {
                 shape.CheckWalls(this);
             }

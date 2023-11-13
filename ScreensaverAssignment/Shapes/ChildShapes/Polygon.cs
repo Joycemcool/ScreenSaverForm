@@ -26,8 +26,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         {
             this.topX = x;
             this.topY = y;
-            XVelocity = random.Next(-100, 100);
-            YVelocity = random.Next(-100, 100);
+            XVelocity = random.Next(-30, 30);
+            YVelocity = random.Next(-30, 30);
         }
 
         public override void Draw(PaintEventArgs e, Form form)
@@ -41,7 +41,8 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
                 int y1 = topY + (int)(radius * Math.Sin(angle));
                 points[i] = new Point(x1, y1);
             }
-            color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
+            //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
+            color = Color.Gray;
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, points);
 
@@ -52,6 +53,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         {
             this.topX += XVelocity;
             this.topY += YVelocity;
+
         }
 
         public override void CheckWalls(Form form)
