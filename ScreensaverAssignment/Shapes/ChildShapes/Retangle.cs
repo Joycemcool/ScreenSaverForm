@@ -11,8 +11,10 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
 {
     public class Retangle : Shape
     {
-        public int width = 74; 
-        public int height = 64; 
+        public int width = 100; 
+        public int height = 100;
+        public int widthChanged = 50;
+        public int heightChanged = 50;
         public int topX { get; set; }
         public int topY { get; set; }
         private Random random = new Random();
@@ -21,7 +23,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         private int YVelocity;
         public Color GradientColor1 { get; set; }
         public Color GradientColor2 { get; set; }
-
+        private bool bouncing = false;
         public Retangle(int x, int y): base (x, y)
         {
             // Initialize the position of the retangle
@@ -33,17 +35,32 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         public override void Draw(PaintEventArgs e, Form form)
         {
             // SolidBrush brush = new SolidBrush(color);
-            GradientColor1 = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
-            GradientColor2 = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
+
+            if (bouncing)
+            {
+                GradientColor1 = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
+                GradientColor2 = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
+                Rectangle boundingRect = new Rectangle(topX, topY, width, height);
+                LinearGradientBrush brush = new LinearGradientBrush(boundingRect, GradientColor1, GradientColor2, LinearGradientMode.Horizontal);
+                e.Graphics.FillRectangle(brush, boundingRect);
+            }
+            else
+            {
+                Color color = new Color();
+                color = Color.FromArgb(random.Next(152), random.Next(256), random.Next(256), random.Next(256));
+                Rectangle boundingRect = new Rectangle(topX, topY, widthChanged, heightChanged);
+                SolidBrush brush =new SolidBrush(color);
+                e.Graphics.FillRectangle(brush, boundingRect);
+
+            }
 
             // Calculate the bounding rectangle for the circle
-            Rectangle boundingRect = new Rectangle(topX, topY, width, height);
-            LinearGradientBrush brush = new LinearGradientBrush(boundingRect, GradientColor1, GradientColor2, LinearGradientMode.Horizontal);
+
             //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
 
             //// Draw the circle using the Graphics object from PaintEventArgs
-            e.Graphics.FillRectangle(brush, boundingRect);
 
+            CheckWalls(form);
         }
 
         public override void Move(Form form)
@@ -60,12 +77,14 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             {
                 FlipX();
                 Move(form);
+                bouncing = !bouncing;
             }
 
             if (topY <= form.ClientRectangle.Top || (topY + height) >= form.ClientRectangle.Bottom)
             {
                 FlipY();
                 Move(form);
+                bouncing = !bouncing;
 
             }
         }

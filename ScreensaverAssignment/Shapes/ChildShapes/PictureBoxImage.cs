@@ -47,7 +47,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
                 form.Controls.Add(PictureBox);
             }
 
-
+            CheckWalls(form);
         }
 
         public override void Move(Form form)

@@ -55,52 +55,48 @@ namespace ScreensaverAssignment
                 shape.Move(this);
             }
 
-            foreach (Shape shapeA in shapeList)
+            foreach (Shape shapeA in shapeListCopy)
             {
                 if (shapeA.GetType().ToString() == "ScreensaverAssignment.Shapes.ChildShapes.Circle")
                 {
-                    foreach (Shape shapeB in shapeList)
+                    foreach (Shape shapeB in shapeListCopy)
                     {
-                                    if (shapeA !=shapeB && shapeA.GetType().ToString()== shapeB.GetType().ToString())
-                                     {
-                                        Console.WriteLine(shapeA.GetType().ToString());
+                        if (shapeA !=shapeB && shapeA.GetType().ToString()== shapeB.GetType().ToString())
+                            {
+                            Console.WriteLine(shapeA.GetType().ToString());
                             
-                                        int rangeX = 100; 
-                                        int rangeY = 100;
-                                        int negRangX = -100;
-                                        int negRangY = -100;
+                            int rangeX = 80; 
+                            int rangeY = 80;
+                            int negRangX = -80;
+                            int negRangY = -80;
 
-                            //bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
-                            //bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
+                            bool meetOnX = (shapeB.topX - shapeA.topX) >= negRangX && (shapeB.topX - shapeA.topX) <= rangeX;
+                            bool meetOnY = (shapeB.topY - shapeA.topY) >= negRangY && (shapeB.topY - shapeA.topY) <= rangeY;
 
-                            //bool meetOnX = Math.Abs(shapeB.topX - shapeA.topX) >= negRangX || Math.Abs(shapeB.topX - shapeA.topX) <= rangeX;
-                            //bool meetOnY = Math.Abs(shapeB.topY - shapeA.topY) >= negRangY || Math.Abs(shapeB.topY - shapeA.topY) <= rangeY;
 
-                            bool meetOnX = (shapeB.topX - shapeA.topX) >= negRangX || (shapeB.topX - shapeA.topX) <= rangeX;
-                            bool meetOnY =(shapeB.topY - shapeA.topY) >= negRangY || (shapeB.topY - shapeA.topY) <= rangeY;
                             if (meetOnX && meetOnY)
-                                        {
-                                            Console.WriteLine("Shapes meet: shapeA and shapeB");
-                                            shapeA.FlipX();shapeA.FlipY();
-                                            shapeB.FlipY();shapeB.FlipX();
-                                            shapeA.Move(this);
-                                            shapeB.Move(this);
-                                        }
+                                {
+                                    Console.WriteLine("Shapes meet: shapeA and shapeB");
+                                    shapeA.FlipX();shapeA.FlipY();
+                                    shapeB.FlipY();shapeB.FlipX();
+                                    shapeA.Move(this);
+                                    shapeB.Move(this);
+                                }
 
-                                    }
+                        }
 
                     }
                 }
                
             }
- 
 
 
-            foreach (Shape shape in shapeListCopy)
 
-            {
-                shape.CheckWalls(this);
-            }
+            //foreach (Shape shape in shapeListCopy)
+
+            //{
+            //    shape.CheckWalls(this);
+            //}
 
 
             this.Invalidate();
@@ -121,7 +117,6 @@ namespace ScreensaverAssignment
 
         private void MouseClickHandler(object sender, MouseEventArgs e)
         {
-            
             
             Random random = new Random();
             int ran = random.Next(0, 5);

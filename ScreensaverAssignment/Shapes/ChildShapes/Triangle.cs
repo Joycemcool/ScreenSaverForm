@@ -54,7 +54,7 @@ namespace ScreensaverAssignment.Shapes
 
         });
 
-
+            CheckWalls(form);
         }
 
         //TODO: IMPLEMENT MOVE FUNCTION FOR TRIANGLE AND RETANGLE

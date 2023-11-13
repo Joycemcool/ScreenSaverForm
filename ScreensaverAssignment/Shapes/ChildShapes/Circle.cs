@@ -21,6 +21,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         private int YVelocity;
         private Color color;
         private Random random = new Random();
+        private bool bouncing = false;
 
         public int Size { get { return size; } }
 
@@ -39,9 +40,18 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         public override void Draw(PaintEventArgs e, Form form)
         {
             //color = Color.FromArgb(random.Next(152), random.Next(255), random.Next(255), random.Next(255));
-            color = Color.Red;
+            if (bouncing)
+            {
+                color = Color.Blue;
+            }
+            else
+            {
+                color = Color.Red;
+            }
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillEllipse(brush, circleBox);
+
+            CheckWalls(form);
 
         }
 
@@ -60,21 +70,18 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
         }
         public override void CheckWalls(Form form)
         {
-            // Check for collisions with the form boundaries
             if (circleBox.Left <= form.ClientRectangle.Left || circleBox.Right >= form.ClientRectangle.Right)
             {
                 FlipX();
                 Move(form);
-                ChangeBallColor();
-
-
+                bouncing = !bouncing;
             }
 
             if (circleBox.Top <= form.ClientRectangle.Top || circleBox.Bottom >= form.ClientRectangle.Bottom)
             {
                 FlipY();
                 Move(form);
-
+                bouncing = !bouncing;
             }
         }
 

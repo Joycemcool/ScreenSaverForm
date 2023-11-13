@@ -45,7 +45,7 @@ namespace ScreensaverAssignment.Shapes.ChildShapes
             color = Color.Gray;
             SolidBrush brush = new SolidBrush(color);
             e.Graphics.FillPolygon(brush, points);
-
+            CheckWalls(form);
 
         }
 
